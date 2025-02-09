@@ -18,12 +18,15 @@ import com.example.apiexplorer.ui.theme.APIExplorerTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Permit aplicației să se extindă pe întregul ecran, fără margini inutile.
         enableEdgeToEdge()
         setContent {
             APIExplorerTheme {
+                // Creăm controller-ul de navigație pentru a gestiona tranzițiile între ecrane.
                 val navController = rememberNavController()
                 Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
                     Box(modifier = Modifier.padding(paddingValues)) {
+                        // Pornim fluxul principal de navigare al aplicației.
                         AppNavHost(navController = navController)
                     }
                 }
@@ -36,6 +39,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     APIExplorerTheme {
+        // Un preview simplu, util pentru verificarea aspectului temei.
         Box(modifier = Modifier.fillMaxSize())
     }
 }

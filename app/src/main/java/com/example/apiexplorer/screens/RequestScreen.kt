@@ -16,7 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ExitToApp // CORRECTED: Use AutoMirrored
+import androidx.compose.material.icons.automirrored.filled.ExitToApp // Folosim autoMirrored pentru suport RTL
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +28,7 @@ import androidx.navigation.NavHostController
 import com.example.apiexplorer.navigation.Routes
 import java.io.Serializable
 
+// Modelul datelor pentru cererea API; îl salvăm ca Serializable pentru a-l putea transmite între ecrane.
 data class ApiRequest(
     val url: String,
     val method: String,
@@ -38,6 +39,7 @@ data class ApiRequest(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RequestScreen(navController: NavHostController) {
+    // Stările locale pentru câmpurile de input.
     var url by remember { mutableStateOf("") }
     var method by remember { mutableStateOf("GET") }
     var headers by remember { mutableStateOf("") }
@@ -48,12 +50,12 @@ fun RequestScreen(navController: NavHostController) {
             TopAppBar(
                 title = { Text("API Request") },
                 actions = {
+                    // Butonul de exit: apasă pentru a reveni la ecranul precedent.
                     IconButton(onClick = {
-                        // Add your exit logic here (likely navController.popBackStack())
                         navController.popBackStack()
                     }) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ExitToApp, // CORRECTED: Use AutoMirrored
+                            imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                             contentDescription = "Exit"
                         )
                     }
@@ -68,6 +70,7 @@ fun RequestScreen(navController: NavHostController) {
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.Top
             ) {
+                // Input pentru URL-ul API
                 OutlinedTextField(
                     value = url,
                     onValueChange = { url = it },
@@ -75,6 +78,7 @@ fun RequestScreen(navController: NavHostController) {
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
+                // Input pentru metoda HTTP, de ex. GET sau POST
                 OutlinedTextField(
                     value = method,
                     onValueChange = { method = it },
@@ -82,6 +86,7 @@ fun RequestScreen(navController: NavHostController) {
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
+                // Input pentru anteturi, introduse în format JSON
                 OutlinedTextField(
                     value = headers,
                     onValueChange = { headers = it },
@@ -89,6 +94,7 @@ fun RequestScreen(navController: NavHostController) {
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
+                // Input pentru corpul cererii
                 OutlinedTextField(
                     value = body,
                     onValueChange = { body = it },
@@ -96,6 +102,7 @@ fun RequestScreen(navController: NavHostController) {
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(16.dp))
+                // Buton pentru trimiterea cererii; salvăm datele și navigăm către ecranul de răspuns.
                 Button(
                     onClick = {
                         navController.currentBackStackEntry

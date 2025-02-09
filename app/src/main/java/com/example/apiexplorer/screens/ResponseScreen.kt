@@ -10,23 +10,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
-import com.example.apiexplorer.data.ApiService // ADDED IMPORT
+import com.example.apiexplorer.data.ApiService // Import necesar pentru a face cereri API
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ResponseScreen(navController: NavHostController) {
+    // Obținem cererea API din ecranul anterior, dacă există.
     val savedStateHandle = navController.previousBackStackEntry?.savedStateHandle
     val apiRequest = savedStateHandle?.get<ApiRequest>("api_request")
+
+    // Mesajul inițial afișat până primim răspunsul.
     var responseText by remember { mutableStateOf("Awaiting response...") }
 
+    // Efectuăm cererea API în mod asincron. Blocul se reexecută dacă apiRequest se schimbă.
     LaunchedEffect(apiRequest) {
         apiRequest?.let { request ->
-            // Simulate network request (MUST be in a coroutine)
-            launch { // Use launch for a suspending function call
+            launch {
                 responseText = try {
+                    // Apelăm serviciul API și actualizăm textul cu răspunsul.
                     ApiService.makeRequest(request)
                 } catch (e: Exception) {
-                    "Error: ${e.message}" // Handle errors gracefully
+                    // În caz de eroare, afișăm mesajul corespunzător.
+                    "Error: ${e.message}"
                 }
             }
         }
@@ -37,12 +42,12 @@ fun ResponseScreen(navController: NavHostController) {
             TopAppBar(
                 title = { Text("API Response") },
                 actions = {
+                    // Butonul de navigare înapoi.
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
-                    IconButton(onClick = {
-                        navController.popBackStack() // Add exit logic here, likely popBackStack()
-                    }) {
+                    // Butonul de exit, care revine la ecranul anterior.
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Exit")
                     }
                 }
@@ -55,6 +60,7 @@ fun ResponseScreen(navController: NavHostController) {
                     .padding(16.dp)
                     .fillMaxSize()
             ) {
+                // Afișăm textul cu rezultatul cererii API.
                 Text(text = responseText)
             }
         }

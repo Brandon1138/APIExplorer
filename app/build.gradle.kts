@@ -28,17 +28,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17 // Use Java 17 or later
+        sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "17"  // Match Java version
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "2.0.0" // Use a compatible version
+        kotlinCompilerExtensionVersion = "2.0.0"
     }
 }
 
@@ -52,12 +52,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    // REMOVE explicit versions:
-//    implementation("androidx.compose.material:material-icons-extended:1.7.7")
-//    implementation("androidx.compose.ui:ui:1.7.7")
-//    implementation("androidx.compose.material3:material3:1.3.1")
-    implementation("androidx.compose.material:material-icons-extended") // No version!
-    implementation("androidx.navigation:navigation-compose:2.8.6") // Keep this one, it's not part of the BOM.
+    implementation("androidx.compose.material:material-icons-extended")
+    implementation("androidx.navigation:navigation-compose:2.8.6")
 
 
     testImplementation(libs.junit)
